@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">MapGame</string>
+    <string name="app_name">Guess My Place</string>
+    <string name="title_activity_game">Guess My Place</string>
 </resources>
