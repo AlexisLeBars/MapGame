@@ -21,6 +21,9 @@
             android:name=".GameActivity"
             android:label="@string/title_activity_game"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyD9J0XSKrlSSyr3zYWf7JzKHHYr385L674"/>
     </application>
 
 </manifest>
