@@ -2,6 +2,7 @@ package com.mapgame.alexislebars.mapgame;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -75,6 +76,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 *StrictMath.cos(StrictMath.abs(sydney.longitude - point.longitude))
                 );
                 double dist = SphericalUtil.computeDistanceBetween(point,sydney)/1000;
+
                 Marker m = mMap.addMarker(new MarkerOptions()
                         .position(point)
                         .icon(BitmapDescriptorFactory
