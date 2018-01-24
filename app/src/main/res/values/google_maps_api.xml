@@ -3,6 +3,8 @@
 <resources>
     <string name="google_maps_key_instructions"
     templateMergeStrategy="replace"/>
+    <string name="test"
+        templateMergeStrategy="replace"/>
     <string name="google_maps_key"
         templateMergeStrategy="preserve"> AIzaSyD9J0XSKrlSSyr3zYWf7JzKHHYr385L674
     </string>
