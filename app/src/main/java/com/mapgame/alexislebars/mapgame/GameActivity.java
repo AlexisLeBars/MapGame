@@ -22,18 +22,28 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.SphericalUtil;
 
 public class GameActivity extends AppCompatActivity implements OnMapReadyCallback, OnStreetViewPanoramaReadyCallback {
 
     private GoogleMap mMap;
+    private StreetViewPanorama streetView = null;
+    private DBSpot biblio = new DBSpot();
+    private LatLng posToFind;
+    private Integer level = 0;
+    private Double score = 0.0;
+    private int tour = 4;
+    private boolean mapR = false,streetR=false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent i = getIntent();
-        Integer level = i.getIntExtra("Level",1);
+        level = i.getIntExtra("Level",1);
+        Log.d("pos","difficulter : "+level);
         setContentView(R.layout.activity_game);
         //Toolbar toolbar = findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
@@ -59,50 +69,77 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        mapR = true;
         mMap = googleMap;
         mMap.getUiSettings().setZoomControlsEnabled(true);
         // Add a marker in Sydney, Australia, and move the camera.
         final LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        if(mapR && streetR )
+            setNextPos();
+       // mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener(){
 
             @Override
             public void onMapClick(LatLng point){
-                double dist2 = 1.852*60*StrictMath.acos(
-                        StrictMath.sin(point.latitude)*StrictMath.sin(sydney.latitude)
-                                + StrictMath.cos(point.latitude)*StrictMath.cos(sydney.latitude)
-                                *StrictMath.cos(StrictMath.abs(sydney.longitude - point.longitude))
-                );
-                double dist = SphericalUtil.computeDistanceBetween(point,sydney)/1000;
 
-                Marker m = mMap.addMarker(new MarkerOptions()
+                double dist = SphericalUtil.computeDistanceBetween(point,posToFind)/1000;
+                score += dist;
+
+                mMap.addMarker(new MarkerOptions()
                         .position(point)
                         .icon(BitmapDescriptorFactory
                                 .defaultMarker(BitmapDescriptorFactory.HUE_CYAN))
                         .draggable(false)
                         .visible(true)
-                        .title("user Position")
-                        .snippet("dist : "+ dist)
                 );
 
-                mMap.addPolyline(new PolylineOptions()
-                    .add(point)
-                    .add(sydney)
-                    .color(Color.RED)
-                    .geodesic(true)
-                );
-                Log.d("passage",
-                        "passage dans onClick "+ dist);
+                PolylineOptions l = (new PolylineOptions())
+                        .add(point)
+                        .add(posToFind)
+                        .color(Color.BLACK)
+                        .geodesic(true);
+                Polyline pl =  mMap.addPolyline(l);
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                pl.remove();
+                setNextPos();
             }
         });
     }
 
+    public void endGame(){
+        Log.d("pos","fin de la partie:"+score);
+    }
 
+    public void setNextPos(){
+
+        if( tour > 0){
+            posToFind = biblio.getNewSpot(level);
+            if(streetView != null){
+                streetView.setPosition(posToFind);
+                Log.d("pos","streeview pos change "+posToFind.latitude+ " / "+ posToFind.longitude);
+            }
+
+            Log.d("pos",posToFind.latitude+ " / "+ posToFind.longitude);
+        }else{
+            endGame();
+        }
+
+        tour--;
+    }
 
     @Override
     public void onStreetViewPanoramaReady(StreetViewPanorama streetViewPanorama) {
-        streetViewPanorama.setPosition(new LatLng(-33.87365, 151.20689));
+        streetR = true;
+        if( mapR & streetR)
+            setNextPos();
+        streetView = streetViewPanorama;
+        streetViewPanorama.setPosition(posToFind);
+        Log.d("pos","streetView OK" + posToFind.latitude+ " / "+ posToFind.longitude);
     }
 }

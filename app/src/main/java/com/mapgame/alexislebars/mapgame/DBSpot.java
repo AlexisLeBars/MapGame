@@ -49,9 +49,9 @@ public class DBSpot {
         }
         int r = (new Random()).nextInt(nb+1);
         for(Spot s : db){
-            if(r == 0){
+            if(r == 0 && (s.i == level && !s.b )){
                 s.b = true;
-                return s;
+                return s.ll;
             }else{
                 if( s.i == level && !s.b ){
                     r--;
