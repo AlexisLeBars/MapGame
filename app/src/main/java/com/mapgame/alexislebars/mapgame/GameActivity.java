@@ -2,14 +2,17 @@ package com.mapgame.alexislebars.mapgame;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -26,6 +29,10 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.SphericalUtil;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
 public class GameActivity extends AppCompatActivity implements OnMapReadyCallback, OnStreetViewPanoramaReadyCallback {
 
     private GoogleMap mMap;
@@ -34,6 +41,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     private LatLng posToFind;
     private Integer level = 0;
     private Double score = 0.0;
+    private String mode = "";
     private int tour = 4;
     private boolean mapR = false,streetR=false;
 
@@ -42,9 +50,10 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent i = getIntent();
-        level = i.getIntExtra("Level",1);
-        Log.d("pos","difficulter : "+level);
+        level = i.getIntExtra("level",1);
+        mode = i.getStringExtra("mode");
         setContentView(R.layout.activity_game);
+        Log.d("pos",mode);
         //Toolbar toolbar = findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
@@ -74,42 +83,16 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.getUiSettings().setZoomControlsEnabled(true);
         // Add a marker in Sydney, Australia, and move the camera.
         final LatLng sydney = new LatLng(-34, 151);
-        if(mapR && streetR )
+        if(streetR){
             setNextPos();
+            googleMapClickListener();
+        }
+
+
        // mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener(){
 
-            @Override
-            public void onMapClick(LatLng point){
-
-                double dist = SphericalUtil.computeDistanceBetween(point,posToFind)/1000;
-                score += dist;
-
-                mMap.addMarker(new MarkerOptions()
-                        .position(point)
-                        .icon(BitmapDescriptorFactory
-                                .defaultMarker(BitmapDescriptorFactory.HUE_CYAN))
-                        .draggable(false)
-                        .visible(true)
-                );
-
-                PolylineOptions l = (new PolylineOptions())
-                        .add(point)
-                        .add(posToFind)
-                        .color(Color.BLACK)
-                        .geodesic(true);
-                Polyline pl =  mMap.addPolyline(l);
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                pl.remove();
-                setNextPos();
-            }
-        });
     }
 
     public void endGame(){
@@ -136,10 +119,79 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onStreetViewPanoramaReady(StreetViewPanorama streetViewPanorama) {
         streetR = true;
-        if( mapR & streetR)
+        if(mapR){
             setNextPos();
+            googleMapClickListener();
+
+        }
+
         streetView = streetViewPanorama;
         streetViewPanorama.setPosition(posToFind);
         Log.d("pos","streetView OK" + posToFind.latitude+ " / "+ posToFind.longitude);
     }
+    private void googleMapClickListener(){
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener(){
+
+            @Override
+            public void onMapClick(LatLng point){
+                Geocoder gcd = null;
+
+                double dist = 0;
+                String message = null;//message a envoyer a l'utilisateur
+
+                if(mode.equals("Pays")){
+                    //if GameMode is Pays
+                    gcd = new Geocoder(getApplicationContext(), Locale.getDefault());
+                    List<Address> addrToFind = null;
+                    List<Address> addrUser = null;
+                    try {
+                        addrToFind = gcd.getFromLocation(posToFind.latitude,posToFind.longitude,1);
+                        addrUser = gcd.getFromLocation(point.latitude,point.longitude,1);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    if(addrToFind.get(0).getCountryName().equals(addrUser.get(0).getCountryName())){
+                        dist = 1;
+                    }
+                }else{
+                    //for other GameMode
+                    dist = SphericalUtil.computeDistanceBetween(point,posToFind)/1000;
+                }
+                    score += dist;
+                //add marker at the user point
+                mMap.addMarker(new MarkerOptions()
+                        .position(point)
+                        .icon(BitmapDescriptorFactory
+                                .defaultMarker(BitmapDescriptorFactory.HUE_CYAN))
+                        .draggable(false)
+                        .visible(true)
+                );
+
+                Polyline pl = addLineBetween(point,posToFind);
+                //send message to the user about the distance miss
+                Toast.makeText(getApplicationContext(),""+dist+ " away for the answer",Toast.LENGTH_LONG).show();
+                //clear the map after 7 sec
+                //while this time we have to unzoom and zoom on the right place
+                (new Handler()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mMap.clear();
+                    }
+                },7000);
+
+                setNextPos();
+            }
+        });
+    }
+
+    private Polyline addLineBetween(LatLng a, LatLng b){
+        PolylineOptions l = (new PolylineOptions())
+                .add(a)
+                .add(b)
+                .color(Color.BLACK)
+                //.geodesic(true)
+                ;
+        return mMap.addPolyline(l);
+    }
 }
+

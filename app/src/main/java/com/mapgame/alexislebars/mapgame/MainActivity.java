@@ -6,6 +6,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.view.View;
 import android.content.Intent;
+import android.widget.Spinner;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,14 +15,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final Button buttonF = findViewById(R.id.btFacile);
+        final Spinner sp = findViewById(R.id.gameChoice);
+        //sp.setOnItemClickListener(new );
         buttonF.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Log.d("passage",
-                        "mode facile");
+
                 Intent intent = new Intent(MainActivity.this, GameActivity.class);
-                intent.putExtra("Level",1);
+                intent.putExtra("level",1);
+                intent.putExtra("mode",String.valueOf(sp.getSelectedItem()));
                 startActivity(intent);
             }
+
+
         });
+
     }
 }
