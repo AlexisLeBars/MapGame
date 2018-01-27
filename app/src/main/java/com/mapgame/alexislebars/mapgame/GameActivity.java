@@ -32,6 +32,8 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.SphericalUtil;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -46,11 +48,15 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     private String mode = "";
     private int tour = 4;
     private boolean mapR = false,streetR=false;
+    private LatLng lastMarker;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(savedInstanceState != null){
+            restoreState(savedInstanceState);
+        }
         Intent i = getIntent();
         level = i.getIntExtra("level",1);
         mode = i.getStringExtra("mode");
@@ -83,18 +89,17 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapR = true;
         mMap = googleMap;
         mMap.getUiSettings().setZoomControlsEnabled(true);
-        // Add a marker in Sydney, Australia, and move the camera.
-        final LatLng sydney = new LatLng(-34, 151);
+        final LatLng pos = new LatLng(0, 0);
         if(streetR){
             setNextPos();
             googleMapClickListener();
         }
-
-
-       // mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-
-
+        if(lastMarker != null){
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(lastMarker));
+        }
+        else {
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(pos));
+        }
     }
 
     public void endGame(){
@@ -136,11 +141,11 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             @Override
             public void onMapClick(LatLng point){
-                Geocoder gcd = null;
+                Geocoder gcd ;
 
                 double dist = 0;
                 String message = null;//message a envoyer a l'utilisateur
-
+                lastMarker = new LatLng(point.latitude, point.longitude);
                 if(mode.equals("Pays")){
                     //if GameMode is Pays
                     gcd = new Geocoder(getApplicationContext(), Locale.getDefault());
@@ -152,10 +157,11 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    if(addrToFind.get(0).getCountryName().equals(addrUser.get(0).getCountryName())){
+                    if(addrToFind != null && addrToFind.get(0).getCountryName().equals(addrUser.get(0).getCountryName())){
                         dist = 1;
                     }
-                }else{
+                }
+                else{
                     //for other GameMode
                     dist = SphericalUtil.computeDistanceBetween(point,posToFind)/1000;
                 }
@@ -171,7 +177,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 Polyline pl = addLineBetween(point,posToFind);
                 //send message to the user about the distance miss
-                Toast.makeText(getApplicationContext(),""+dist+ " away for the answer",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),""+Math.round(dist)+ " away from the answer",Toast.LENGTH_LONG).show();
                 //clear the map after 7 sec
                 //while this time we have to unzoom and zoom on the right place
 
@@ -235,6 +241,30 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         //mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cp.build()),2000,null);
 
        // mMap.animateCamera(CameraUpdateFactory.zoomTo(8),1000,null);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putIntegerArrayList("index",biblio.curIdxs);
+        if(lastMarker != null) {
+            outState.putBoolean("lastM",true);
+            outState.putDouble("lat", lastMarker.latitude);
+            outState.putDouble("lon", lastMarker.longitude);
+        }
+        else{
+            outState.putBoolean("lastM",false);
+        }
+    }
+
+    public void restoreState(Bundle state){
+        if(state != null){
+            ArrayList<Integer> idxs = state.getIntegerArrayList("index");
+            biblio.setViewedSpots(idxs);
+            if(state.getBoolean("lastM")) {
+                lastMarker = new LatLng(state.getDouble("lat"), state.getDouble("lon"));
+            }
+        }
     }
 }
 

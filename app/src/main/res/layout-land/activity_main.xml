@@ -2,30 +2,27 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="horizontal"
     tools:context="com.mapgame.alexislebars.mapgame.MainActivity">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="8dp"
+        android:layout_width="584dp"
+        android:layout_height="259dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:layout_height="263dp"
+            android:layout_width="260dp"
+            android:layout_height="match_parent"
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -33,18 +30,19 @@
             app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@drawable/img" />
 
-        <Spinner
-            android:id="@+id/gameChoice"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:entries="@array/game_mode"
-            android:prompt="@string/game_mode_title"
-         />
-
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="252dp"
-            android:orientation="vertical">
+            android:layout_width="252dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <Spinner
+                android:id="@+id/gameChoice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:entries="@array/game_mode"
+                android:prompt="@string/game_mode_title" />
 
             <Button
                 android:id="@+id/btFacile"

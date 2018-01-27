@@ -1,12 +1,16 @@
 package com.mapgame.alexislebars.mapgame;
 
 import android.text.BoringLayout;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Collections;
+import java.util.ArrayList;
+import java.lang.Integer;
 
 /**
  * Created by aurelien on 24/01/18.
@@ -24,10 +28,11 @@ public class DBSpot {
         this.db.add(new Spot(new LatLng(40.420025,-3.6881135),1,false));//espagne
         this.db.add(new Spot(new LatLng(38.6922679,-9.2157719),1,false));//portugal
         this.db.add(new Spot(new LatLng(55.5869039,-3.0191189),3,false));// Coin paumé (royaume uni)
-
+        curIdxs = new ArrayList(db.size());
     }
 
     public ArrayList<Spot> db = new ArrayList<>();
+    public ArrayList<Integer> curIdxs;
 
     private class Spot{
         public LatLng ll;
@@ -51,6 +56,7 @@ public class DBSpot {
         for(Spot s : db){
             if(r == 0 && (s.i == level && !s.b )){
                 s.b = true;
+                curIdxs.add(db.indexOf(s));
                 return s.ll;
             }else{
                 if( s.i == level && !s.b ){
@@ -59,6 +65,14 @@ public class DBSpot {
             }
         }
         return null;
+    }
+    public void setViewedSpots(ArrayList<Integer> idxs){
+        for(Spot s : db){
+            if(idxs.contains(db.indexOf(s)) && s.b == false){
+                s.b = true;
+                Log.d("Lieu","vu "+db.indexOf(s));
+            }
+        }
     }
     private int getNbRowAvilableForLevel(int level){
         int ret = 0;
