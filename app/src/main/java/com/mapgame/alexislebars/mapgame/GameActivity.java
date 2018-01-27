@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -22,6 +23,7 @@ import com.google.android.gms.maps.StreetViewPanorama;
 import com.google.android.gms.maps.StreetViewPanoramaFragment;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -172,14 +174,21 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Toast.makeText(getApplicationContext(),""+dist+ " away for the answer",Toast.LENGTH_LONG).show();
                 //clear the map after 7 sec
                 //while this time we have to unzoom and zoom on the right place
+
+                mMap.getUiSettings().setAllGesturesEnabled(false);
+
+                moveCamera(mMap);
+
+
                 (new Handler()).postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         mMap.clear();
+                        setNextPos();
+                        mMap.getUiSettings().setAllGesturesEnabled(true);
+
                     }
                 },7000);
-
-                setNextPos();
             }
         });
     }
@@ -192,6 +201,40 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                 //.geodesic(true)
                 ;
         return mMap.addPolyline(l);
+    }
+    private void moveCamera(GoogleMap m){
+
+        final GoogleMap.CancelableCallback b = new GoogleMap.CancelableCallback(){
+            @Override
+            public void onFinish() {
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(6),1000,null);
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+        };
+        final GoogleMap.CancelableCallback a = new GoogleMap.CancelableCallback(){
+            @Override
+            public void onFinish() {
+                CameraPosition.Builder cp = new CameraPosition.Builder().target(posToFind);
+                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cp.build()),2000,b);
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+        };
+
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(1), 1000,a);
+        //zoom in
+
+        //CameraPosition.Builder cp = new CameraPosition.Builder().target(posToFind);
+        //mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cp.build()),2000,null);
+
+       // mMap.animateCamera(CameraUpdateFactory.zoomTo(8),1000,null);
     }
 }
 
