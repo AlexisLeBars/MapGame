@@ -27,7 +27,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyD9J0XSKrlSSyr3zYWf7JzKHHYr385L674" />
 
-        <activity android:name=".ScoreView"></activity>
+        <activity android:name=".ScoreView" />
     </application>
 
 </manifest>

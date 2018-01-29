@@ -1,9 +1,5 @@
 package com.mapgame.alexislebars.mapgame;
 
-/**
- * Created by aurelien on 29/01/18.
- */
-
 public class Scores {
     private long id;
     private String level;

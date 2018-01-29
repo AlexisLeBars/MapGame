@@ -6,12 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-
 import java.util.List;
-
-/**
- * Created by alexislebars on 29/01/2018.
- */
 
 public class ScoresAdapter extends ArrayAdapter<Scores> {
     Scores score;

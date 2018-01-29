@@ -6,16 +6,9 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.text.Format;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
-
-/**
- * Created by aurelien on 29/01/18.
- */
 
 public class ScoreDataSource {
     private SQLiteDatabase database;
@@ -82,8 +75,6 @@ public class ScoreDataSource {
 
     private Scores cursorToScore(Cursor cursor) {
         Scores score = new Scores();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy : hh:mm", Locale.FRANCE);
-
         score.setId(cursor.getLong(0));
         score.setLevel(cursor.getString(1));
         score.setScore(cursor.getString(2));

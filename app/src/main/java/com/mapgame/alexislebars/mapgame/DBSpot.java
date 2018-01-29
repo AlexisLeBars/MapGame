@@ -1,18 +1,11 @@
 package com.mapgame.alexislebars.mapgame;
 
-import android.text.BoringLayout;
 import android.util.Log;
-
 import com.google.android.gms.maps.model.LatLng;
-
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import java.lang.Integer;
 
-/**
- * Created by aurelien on 24/01/18.
- */
 
 public class DBSpot {
     public DBSpot(){
@@ -27,7 +20,7 @@ public class DBSpot {
         this.db.add(new Spot(new LatLng(40.420025,-3.6881135),1,false));//espagne
         this.db.add(new Spot(new LatLng(38.6922679,-9.2157719),1,false));//portugal
         this.db.add(new Spot(new LatLng(55.5869039,-3.0191189),3,false));// Coin paumé (royaume uni)
-        curIdxs = new ArrayList(db.size());
+        curIdxs = new ArrayList<>(db.size());
         cur = -1;
     }
 
@@ -76,7 +69,7 @@ public class DBSpot {
     }
     public void setViewedSpots(){
         for(Spot s : db){
-            if(curIdxs.contains(db.indexOf(s)) && s.b == false){
+            if(curIdxs.contains(db.indexOf(s)) && !s.b){
                 s.b = true;
                 Log.d("Lieu r","vu "+db.indexOf(s));
             }

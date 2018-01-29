@@ -8,17 +8,10 @@ import android.location.Geocoder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
-import android.content.Context;
-
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -29,18 +22,12 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.SphericalUtil;
-
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.io.FileOutputStream;
 
 public class GameActivity extends AppCompatActivity implements OnMapReadyCallback, OnStreetViewPanoramaReadyCallback {
 
@@ -197,7 +184,8 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                     Geocoder gcd;
 
                     double dist = 0;
-                    String message = null;//message a envoyer a l'utilisateur
+                    //message a envoyer a l'utilisateur
+                    String message;
                     lastMarker = new LatLng(point.latitude, point.longitude);
                     if (mode.equals("Country")) {
                         //if GameMode is Pays
@@ -245,7 +233,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
                     biblio.curIdxs.add(biblio.cur);
-                    moveCamera(mMap);
+                    moveCamera();
 
 
                     (new Handler()).postDelayed(new Runnable() {
@@ -262,16 +250,15 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
     }
 
-    private Polyline addLineBetween(LatLng a, LatLng b){
+    private void addLineBetween(LatLng a, LatLng b){
         PolylineOptions l = (new PolylineOptions())
                 .add(a)
                 .add(b)
                 .color(Color.BLACK)
-                //.geodesic(true)
                 ;
-        return mMap.addPolyline(l);
+        mMap.addPolyline(l);
     }
-    private void moveCamera(GoogleMap m){
+    private void moveCamera(){
 
         final GoogleMap.CancelableCallback b = new GoogleMap.CancelableCallback(){
             @Override
@@ -296,14 +283,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             }
         };
-
         mMap.animateCamera(CameraUpdateFactory.zoomTo(1), 1000,a);
-        //zoom in
-
-        //CameraPosition.Builder cp = new CameraPosition.Builder().target(posToFind);
-        //mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cp.build()),2000,null);
-
-       // mMap.animateCamera(CameraUpdateFactory.zoomTo(8),1000,null);
     }
 
     @Override
