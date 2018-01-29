@@ -6,6 +6,7 @@ import android.widget.Button;
 import android.view.View;
 import android.content.Intent;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -62,5 +63,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         });
+        Toast.makeText(getApplicationContext(), "Select a Game Mode between Normal, Inverse, Country and click on one difficulty to play", Toast.LENGTH_LONG).show();
     }
 }

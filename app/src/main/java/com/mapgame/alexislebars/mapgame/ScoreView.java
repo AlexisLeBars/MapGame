@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -41,6 +42,7 @@ public class ScoreView extends ListActivity {
 
                 }
             });
+            Toast.makeText(getApplicationContext(), "You can filter rows by clicking on the table headers and share your score by clicking on a row ", Toast.LENGTH_LONG).show();
 
         }
         public void onClick(View v){
