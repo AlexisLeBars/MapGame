@@ -164,10 +164,8 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
             if(streetView != null){
                 streetView.setPosition(posToFind);
-                Log.d("pos","streetview pos change "+posToFind.latitude+ " / "+ posToFind.longitude);
             }
 
-            Log.d("pos",posToFind.latitude+ " / "+ posToFind.longitude);
         }else{
             endGame();
         }
