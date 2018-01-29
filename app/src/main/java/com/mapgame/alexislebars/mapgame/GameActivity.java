@@ -68,6 +68,19 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         Intent i = getIntent();
         level = i.getIntExtra("level",1);
         mode = i.getStringExtra("mode");
+        String message = "";
+        switch (mode){
+            case "Normal":
+                message = "Try to get the lowest score possible by getting the closest to the point of interest !";
+                break;
+            case "Country":
+                message = "Try to guess in what country is the point of interest !";
+                break;
+            case "Inverse":
+                message = "Try to get the highest score by getting as far as possible from the point of interest !";
+                break;
+        }
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
         setContentView(R.layout.activity_game);
         Log.d("pos",mode);
 
@@ -116,7 +129,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
             case 3:
                 levelS = "Hard";
         }
-
+        biblio.reset();
         db.createScore(levelS,score.toString(),mode);
         AlertDialog.Builder builder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -188,7 +201,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                     double dist = 0;
                     String message = null;//message a envoyer a l'utilisateur
                     lastMarker = new LatLng(point.latitude, point.longitude);
-                    if (mode.equals("Pays")) {
+                    if (mode.equals("Country")) {
                         //if GameMode is Pays
                         gcd = new Geocoder(getApplicationContext(), Locale.getDefault());
                         List<Address> addrToFind = null;

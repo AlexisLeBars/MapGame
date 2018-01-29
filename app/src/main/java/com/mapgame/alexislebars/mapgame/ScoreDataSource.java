@@ -67,7 +67,7 @@ public class ScoreDataSource {
             sort = "";
         }
         Cursor cursor = database.query(DataBaseHelper.TABLE_scores,
-                allColumns, null, null, null, null, order+ sort);
+                allColumns, null, null, null, null, order+ sort+","+DataBaseHelper.COLUMN_mode+" DESC");
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {

@@ -2,11 +2,11 @@
     <string name="app_name">3600134-3404201</string>
     <string name="title_activity_game">Guess My Place</string>
 
-    <string name="game_mode_title">Mode de jeu</string>
+    <string name="game_mode_title">Game Mode</string>
 
     <string-array name="game_mode">
         <item>Normal</item>
         <item>Inverse</item>
-        <item>Pays</item>
+        <item>Country</item>
     </string-array>
 </resources>

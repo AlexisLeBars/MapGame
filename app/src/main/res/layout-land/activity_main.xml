@@ -50,25 +50,25 @@
                 android:id="@+id/btFacile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Mode Facile" />
+                android:text="Easy Mode" />
 
             <Button
                 android:id="@+id/btMoyen"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Mode Moyen" />
+                android:text="Medium Mode" />
 
             <Button
                 android:id="@+id/btDifficile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Mode Difficile" />
+                android:text="Hard Mode" />
 
             <Button
                 android:id="@+id/btStat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Tableau des Scores" />
+                android:text="LeaderBoard" />
         </LinearLayout>
 
     </LinearLayout>
