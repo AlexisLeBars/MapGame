@@ -51,7 +51,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Integer level = 0;
     private Double score = 0.0;
     private String mode = "";
-    private int tour = 4;
+    private int tour = 4, nbClick = 0;
     private boolean mapR = false,streetR=false;
     private LatLng lastMarker;
     private boolean savedState = false;
@@ -129,6 +129,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(GameActivity.this, ScoreView.class);
                         startActivity(intent);
+                        finish();
                     }
                 })
                 .setCancelable(false)
@@ -137,7 +138,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     public void setNextPos(){
-
+        nbClick = 0;
         if( tour > 0){
             if(savedState){
                 savedState = false;
@@ -179,70 +180,72 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onMapClick(LatLng point){
                 mMap.getUiSettings().setAllGesturesEnabled(false);
-                Geocoder gcd ;
+                nbClick++;
+                if(nbClick == 1) {
+                    Geocoder gcd;
 
-                double dist = 0;
-                String message = null;//message a envoyer a l'utilisateur
-                lastMarker = new LatLng(point.latitude, point.longitude);
-                if(mode.equals("Pays")){
-                    //if GameMode is Pays
-                    gcd = new Geocoder(getApplicationContext(), Locale.getDefault());
-                    List<Address> addrToFind = null;
-                    List<Address> addrUser = null;
-                    try {
-                        addrToFind = gcd.getFromLocation(posToFind.latitude,posToFind.longitude,1);
-                        addrUser = gcd.getFromLocation(point.latitude,point.longitude,1);
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    double dist = 0;
+                    String message = null;//message a envoyer a l'utilisateur
+                    lastMarker = new LatLng(point.latitude, point.longitude);
+                    if (mode.equals("Pays")) {
+                        //if GameMode is Pays
+                        gcd = new Geocoder(getApplicationContext(), Locale.getDefault());
+                        List<Address> addrToFind = null;
+                        List<Address> addrUser = null;
+                        try {
+                            addrToFind = gcd.getFromLocation(posToFind.latitude, posToFind.longitude, 1);
+                            addrUser = gcd.getFromLocation(point.latitude, point.longitude, 1);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        if (addrToFind != null && addrToFind.get(0).getCountryName().equals(addrUser.get(0).getCountryName())) {
+                            dist = 1;
+                            message = "Good Country ! + 1";
+                        } else
+                            message = "Bad Country ...";
+                    } else {
+                        //for other GameMode
+                        dist = SphericalUtil.computeDistanceBetween(point, posToFind) / 1000;
+                        message = "" + Math.round(dist) + " Km away from the answer";
                     }
-                    if(addrToFind != null && addrToFind.get(0).getCountryName().equals(addrUser.get(0).getCountryName())){
-                        dist = 1;
-                        message = "Good Country ! + 1";
-                    }
-                    message = "Bad Country ...";
-                }
-                else{
-                    //for other GameMode
-                    dist = SphericalUtil.computeDistanceBetween(point,posToFind)/1000;
-                    message = ""+Math.round(dist)+ " Km away from the answer";
-                }
                     score += dist;
-                //add marker at the user point
-                mMap.addMarker(new MarkerOptions()
-                        .position(point)
-                        .icon(BitmapDescriptorFactory
-                                .defaultMarker(BitmapDescriptorFactory.HUE_CYAN))
-                        .draggable(false)
-                        .visible(true)
-                );
-                mMap.addMarker(new MarkerOptions()
-                        .position(posToFind)
-                        .icon(BitmapDescriptorFactory
-                                .defaultMarker(BitmapDescriptorFactory.HUE_CYAN))
-                        .draggable(false)
-                        .visible(true)
-                );
+                    //add marker at the user point
+                    mMap.addMarker(new MarkerOptions()
+                            .position(point)
+                            .icon(BitmapDescriptorFactory
+                                    .defaultMarker(BitmapDescriptorFactory.HUE_CYAN))
+                            .draggable(false)
+                            .visible(true)
+                    );
+                    mMap.addMarker(new MarkerOptions()
+                            .position(posToFind)
+                            .icon(BitmapDescriptorFactory
+                                    .defaultMarker(BitmapDescriptorFactory.HUE_RED))
+                            .draggable(false)
+                            .visible(true)
+                    );
 
-                addLineBetween(point,posToFind);
-                //send message to the user about the distance miss
-                Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
-                //clear the map after 7 sec
-                //while this time we have to unzoom and zoom on the right place
-
-
-                biblio.curIdxs.add(biblio.cur);
-                moveCamera(mMap);
+                    addLineBetween(point, posToFind);
+                    //send message to the user about the distance miss
+                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                    //clear the map after 7 sec
+                    //while this time we have to unzoom and zoom on the right place
 
 
-                (new Handler()).postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mMap.clear();
-                        setNextPos();
-                        mMap.getUiSettings().setAllGesturesEnabled(true);
+                    biblio.curIdxs.add(biblio.cur);
+                    moveCamera(mMap);
 
-                    }
-                },7000);
+
+                    (new Handler()).postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mMap.clear();
+                            setNextPos();
+                            mMap.getUiSettings().setAllGesturesEnabled(true);
+
+                        }
+                    }, 5500);
+                }
             }
         });
     }
