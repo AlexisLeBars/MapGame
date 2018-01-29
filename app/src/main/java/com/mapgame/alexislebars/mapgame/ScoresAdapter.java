@@ -28,12 +28,14 @@ public class ScoresAdapter extends ArrayAdapter<Scores> {
         }
         // Lookup view for data population
         TextView tvScore = convertView.findViewById(R.id.tvScore);
+        TextView tvLevel = convertView.findViewById(R.id.tvLevel);
         TextView tvMode = convertView.findViewById(R.id.tvMode);
         TextView tvDate = convertView.findViewById(R.id.tvDate);
         // Populate the data into the template view using the data object
         tvScore.setText(Math.round(Double.parseDouble(score.getScore()))+"");
         tvMode.setText(score.getMode());
         tvDate.setText(score.getDate());
+        tvLevel.setText(score.getLevel());
         // Return the completed view to render on screen
         return convertView;
     }

@@ -6,7 +6,7 @@ package com.mapgame.alexislebars.mapgame;
 
 public class Scores {
     private long id;
-    private String nom;
+    private String level;
     private String score;
     private String date;
     private String mode;
@@ -19,12 +19,12 @@ public class Scores {
         this.id = id;
     }
 
-    public String getNom() {
-        return nom;
+    public String getLevel() {
+        return level;
     }
 
-    public void setNom(String nom) {
-        this.nom = nom;
+    public void setLevel(String level) {
+        this.level = level;
     }
 
     public String getScore() {

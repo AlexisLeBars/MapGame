@@ -36,9 +36,9 @@ public class ScoreDataSource {
         dbHelper.close();
     }
 
-    public Scores createScore(String nom,String score, String mode) {
+    public Scores createScore(String level,String score, String mode) {
         ContentValues values = new ContentValues();
-        values.put(DataBaseHelper.COLUMN_level, nom);
+        values.put(DataBaseHelper.COLUMN_level, level);
         values.put(DataBaseHelper.COLUMN_score, score);
         values.put(DataBaseHelper.COLUMN_mode, mode);
 
@@ -63,11 +63,9 @@ public class ScoreDataSource {
     public List<Scores> getAllScore(String order) {
         List <Scores> s = new ArrayList<>();
         String sort = " DESC";
-        if(order == null || order.equals("nom") || order.equals("mode")){
+        if(order.equals("level") || order.equals("mode")){
             sort = "";
         }
-        if(order == null)
-            order = "";
         Cursor cursor = database.query(DataBaseHelper.TABLE_scores,
                 allColumns, null, null, null, null, order+ sort);
 
@@ -87,7 +85,7 @@ public class ScoreDataSource {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy : hh:mm", Locale.FRANCE);
 
         score.setId(cursor.getLong(0));
-        score.setNom(cursor.getString(1));
+        score.setLevel(cursor.getString(1));
         score.setScore(cursor.getString(2));
         score.setDate(cursor.getString(3));
         score.setMode(cursor.getString(4));

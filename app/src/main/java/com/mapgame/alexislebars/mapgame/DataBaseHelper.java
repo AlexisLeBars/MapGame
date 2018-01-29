@@ -24,7 +24,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_CREATE = "create table "
             + TABLE_scores + "(" + COLUMN_id
             + " integer primary key autoincrement,"
-            + COLUMN_level +  " text,"
+            + COLUMN_level +  " text not null,"
             + COLUMN_score+ " text not null,"
             + COLUMN_date + " datetime default current_timestamp,"
             + COLUMN_mode + " text not null"

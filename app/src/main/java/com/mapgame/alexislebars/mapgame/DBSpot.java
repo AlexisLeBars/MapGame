@@ -52,7 +52,7 @@ public class DBSpot {
     }
 
     public LatLng getNewSpot(int level){
-        int nb = getNbRowAvilableForLevel(level);
+        int nb = getNbRowAvailableForLevel(level);
 
         if(nb == 0 ){
             Log.d("Lieu","0 available");
@@ -82,7 +82,7 @@ public class DBSpot {
             }
         }
     }
-    private int getNbRowAvilableForLevel(int level){
+    private int getNbRowAvailableForLevel(int level){
         int ret = 0;
         for(Spot s : db){
             if(s.i == level && !s.b){

@@ -70,17 +70,6 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         mode = i.getStringExtra("mode");
         setContentView(R.layout.activity_game);
         Log.d("pos",mode);
-        //Toolbar toolbar = findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
-
-        //FloatingActionButton fab = findViewById(R.id.fab);
-        /*fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -115,7 +104,19 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         ScoreDataSource db = new ScoreDataSource(this);
         db.open();
-        db.createScore("",score.toString(),mode);
+        String levelS = "";
+        switch (level){
+            case 1:
+                levelS = "Easy";
+                break;
+            case 2:
+                levelS = "Medium";
+                break;
+            case 3:
+                levelS = "Hard";
+        }
+
+        db.createScore(levelS,score.toString(),mode);
         AlertDialog.Builder builder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);

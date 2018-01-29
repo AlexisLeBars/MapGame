@@ -48,9 +48,9 @@ public class ScoreView extends ListActivity {
             adapter.clear();
 
             switch (v.getId()){
-                /*case R.id.level:
+                case R.id.level:
                     adapter.addAll(db.getAllScore(DataBaseHelper.COLUMN_level));
-                    break;*/
+                    break;
                 case R.id.score:
                     adapter.addAll(db.getAllScore(DataBaseHelper.COLUMN_score));
                     break;
