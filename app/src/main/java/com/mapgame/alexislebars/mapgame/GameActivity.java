@@ -139,9 +139,9 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onStreetViewPanoramaReady(StreetViewPanorama streetViewPanorama) {
         streetR = true;
         if(mapR){
+
             setNextPos();
             googleMapClickListener();
-
         }
 
         streetView = streetViewPanorama;
