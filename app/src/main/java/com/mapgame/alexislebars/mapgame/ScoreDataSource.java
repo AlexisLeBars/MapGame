@@ -21,7 +21,7 @@ public class ScoreDataSource {
     private SQLiteDatabase database;
     private DataBaseHelper dbHelper;
     private String[] allColumns = { DataBaseHelper.COLUMN_id,
-            DataBaseHelper.COLUMN_nom, DataBaseHelper.COLUMN_score,
+            DataBaseHelper.COLUMN_level, DataBaseHelper.COLUMN_score,
             DataBaseHelper.COLUMN_date, DataBaseHelper.COLUMN_mode};
 
     public ScoreDataSource(Context context) {
@@ -38,7 +38,7 @@ public class ScoreDataSource {
 
     public Scores createScore(String nom,String score, String mode) {
         ContentValues values = new ContentValues();
-        values.put(DataBaseHelper.COLUMN_nom, nom);
+        values.put(DataBaseHelper.COLUMN_level, nom);
         values.put(DataBaseHelper.COLUMN_score, score);
         values.put(DataBaseHelper.COLUMN_mode, mode);
 
@@ -53,7 +53,7 @@ public class ScoreDataSource {
         return score_;
     }
 
-    public void deleteComment(Scores s) {
+    public void deleteScore(Scores s) {
         long id = s.getId();
         System.out.println("Scores deleted with id: " + id);
         database.delete(DataBaseHelper.TABLE_scores, DataBaseHelper.COLUMN_id

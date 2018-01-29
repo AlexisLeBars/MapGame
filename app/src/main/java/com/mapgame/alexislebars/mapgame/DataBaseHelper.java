@@ -12,26 +12,26 @@ import android.util.Log;
 public class DataBaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_scores = "scores";
     public static final String COLUMN_id = "id";
-    public static final String COLUMN_nom = "nom";
+    public static final String COLUMN_level = "nom";
     public static final String COLUMN_score = "score";
     public static final String COLUMN_date = "date";
     public static final String COLUMN_mode = "mode_de_jeu";
 
-    private static final String DATABASE_NAME = "commments.db";
+    private static final String DATABASE_name = "scores.db";
     private static final int DATABASE_VERSION = 1;
 
     // Commande sql pour la création de la base de données
     private static final String DATABASE_CREATE = "create table "
             + TABLE_scores + "(" + COLUMN_id
             + " integer primary key autoincrement,"
-            + COLUMN_nom +  " text,"
+            + COLUMN_level +  " text,"
             + COLUMN_score+ " text not null,"
             + COLUMN_date + " datetime default current_timestamp,"
             + COLUMN_mode + " text not null"
             + ");";
 
     public DataBaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        super(context, DATABASE_name, null, DATABASE_VERSION);
     }
     @Override
     public void onCreate(SQLiteDatabase db) {

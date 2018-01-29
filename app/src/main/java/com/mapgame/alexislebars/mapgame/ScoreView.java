@@ -31,7 +31,11 @@ public class ScoreView extends ListActivity {
             ArrayAdapter<Scores> adapter = (ArrayAdapter<Scores>) getListAdapter();
 
             adapter.clear();
+
             switch (v.getId()){
+                /*case R.id.level:
+                    adapter.addAll(db.getAllScore(DataBaseHelper.COLUMN_level));
+                    break;*/
                 case R.id.score:
                     adapter.addAll(db.getAllScore(DataBaseHelper.COLUMN_score));
                     break;
@@ -45,6 +49,7 @@ public class ScoreView extends ListActivity {
             }
             adapter.notifyDataSetChanged();
         }
+
     @Override
     protected void onResume(){
         db.open();
