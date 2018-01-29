@@ -14,6 +14,7 @@ import java.util.List;
  */
 
 public class ScoresAdapter extends ArrayAdapter<Scores> {
+    Scores score;
     public ScoresAdapter(Context context, List<Scores> scores) {
         super(context, 0, scores);
     }
@@ -21,11 +22,12 @@ public class ScoresAdapter extends ArrayAdapter<Scores> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        Scores score = getItem(position);
+
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.row_layout, parent, false);
         }
+        score = getItem(position);
         // Lookup view for data population
         TextView tvScore = convertView.findViewById(R.id.tvScore);
         TextView tvLevel = convertView.findViewById(R.id.tvLevel);
@@ -39,5 +41,7 @@ public class ScoresAdapter extends ArrayAdapter<Scores> {
         // Return the completed view to render on screen
         return convertView;
     }
-
+    public String getScore(){
+       return score.getScore();
+    }
 }

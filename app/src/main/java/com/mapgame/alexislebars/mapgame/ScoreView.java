@@ -31,7 +31,9 @@ public class ScoreView extends ListActivity {
             final ListView liste = findViewById(android.R.id.list);
             liste.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 public void onItemClick(AdapterView<?> arg0, View view, int arg2,long itemID) {
-                    String score = "Here is my score at Guess My Place : "+liste.getSelectedItem().toString().split(" ")[0];
+                    String a = ((ScoresAdapter)arg0.getAdapter()).getScore();
+                    String score = "Here is my score at Guess My Place : "+a;
+
                     Intent share = new Intent(Intent.ACTION_SEND);
                     share.setType("text/plain");
                     share.putExtra(Intent.EXTRA_TEXT, score);

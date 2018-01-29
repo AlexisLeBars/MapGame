@@ -178,6 +178,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             @Override
             public void onMapClick(LatLng point){
+                mMap.getUiSettings().setAllGesturesEnabled(false);
                 Geocoder gcd ;
 
                 double dist = 0;
@@ -214,14 +215,21 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                         .draggable(false)
                         .visible(true)
                 );
+                mMap.addMarker(new MarkerOptions()
+                        .position(posToFind)
+                        .icon(BitmapDescriptorFactory
+                                .defaultMarker(BitmapDescriptorFactory.HUE_CYAN))
+                        .draggable(false)
+                        .visible(true)
+                );
 
-                Polyline pl = addLineBetween(point,posToFind);
+                addLineBetween(point,posToFind);
                 //send message to the user about the distance miss
                 Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
                 //clear the map after 7 sec
                 //while this time we have to unzoom and zoom on the right place
 
-                mMap.getUiSettings().setAllGesturesEnabled(false);
+
                 biblio.curIdxs.add(biblio.cur);
                 moveCamera(mMap);
 
