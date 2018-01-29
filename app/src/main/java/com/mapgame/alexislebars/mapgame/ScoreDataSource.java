@@ -63,9 +63,11 @@ public class ScoreDataSource {
     public List<Scores> getAllScore(String order) {
         List <Scores> s = new ArrayList<>();
         String sort = "DESC";
-        if( order.equals("nom") || order.equals("mode")){
+        if(order == null || order.equals("nom") || order.equals("mode")){
             sort = "";
         }
+        if(order == null)
+            order = "";
         Cursor cursor = database.query(DataBaseHelper.TABLE_scores,
                 allColumns, null, null, null, null, order+ sort);
 

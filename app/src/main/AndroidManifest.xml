@@ -3,6 +3,7 @@
     package="com.mapgame.alexislebars.mapgame">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -20,10 +21,13 @@
         <activity
             android:name=".GameActivity"
             android:label="@string/title_activity_game"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyD9J0XSKrlSSyr3zYWf7JzKHHYr385L674"/>
+            android:value="AIzaSyD9J0XSKrlSSyr3zYWf7JzKHHYr385L674" />
+
+        <activity android:name=".ScoreView"></activity>
     </application>
 
 </manifest>
