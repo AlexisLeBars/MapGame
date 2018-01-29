@@ -62,7 +62,7 @@ public class ScoreDataSource {
 
     public List<Scores> getAllScore(String order) {
         List <Scores> s = new ArrayList<>();
-        String sort = "DESC";
+        String sort = " DESC";
         if(order == null || order.equals("nom") || order.equals("mode")){
             sort = "";
         }
@@ -89,7 +89,7 @@ public class ScoreDataSource {
         score.setId(cursor.getLong(0));
         score.setNom(cursor.getString(1));
         score.setScore(cursor.getString(2));
-        score.setDate(sdf.format(cursor.getString(3)));
+        score.setDate(cursor.getString(3));
         score.setMode(cursor.getString(4));
         return score;
     }

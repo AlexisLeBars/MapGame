@@ -1,13 +1,16 @@
 package com.mapgame.alexislebars.mapgame;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -109,6 +112,27 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public void endGame(){
         Log.d("pos","fin de la partie:"+score);
+
+        ScoreDataSource db = new ScoreDataSource(this);
+        db.open();
+        db.createScore("",score.toString(),mode);
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(this);
+        }
+        builder.setTitle("Game Over !")
+                .setMessage("Your Score : "+Math.round(score))
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(GameActivity.this, ScoreView.class);
+                        startActivity(intent);
+                    }
+                })
+                .setCancelable(false)
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .show();
     }
 
     public void setNextPos(){
