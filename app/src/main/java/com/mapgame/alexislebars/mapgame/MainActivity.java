@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
         final Button buttonF = findViewById(R.id.btFacile);
         final Button buttonM = findViewById(R.id.btMoyen);
         final Button buttonD = findViewById(R.id.btDifficile);
+        final Button buttonS = findViewById(R.id.btStat);
         final Spinner sp = findViewById(R.id.gameChoice);
         //sp.setOnItemClickListener(new );
         buttonF.setOnClickListener(new View.OnClickListener() {
@@ -48,6 +49,15 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, GameActivity.class);
                 intent.putExtra("level",3);
                 intent.putExtra("mode",String.valueOf(sp.getSelectedItem()));
+                startActivity(intent);
+            }
+
+
+        });
+        buttonS.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                Intent intent = new Intent(MainActivity.this, ScoreView.class);
                 startActivity(intent);
             }
 

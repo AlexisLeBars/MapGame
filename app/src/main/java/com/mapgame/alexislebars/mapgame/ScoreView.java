@@ -1,10 +1,13 @@
 package com.mapgame.alexislebars.mapgame;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import java.util.List;
 
@@ -22,9 +25,21 @@ public class ScoreView extends ListActivity {
             List<Scores> values = db.getAllScore(order);
             setContentView(R.layout.activity_score_view);
 
-            adapter = new ArrayAdapter<Scores>(this,
-                    android.R.layout.activity_list_item,values);
+            adapter = new ScoresAdapter(this,values);
             setListAdapter(adapter);
+
+            final ListView liste = findViewById(android.R.id.list);
+            liste.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                public void onItemClick(AdapterView<?> arg0, View view, int arg2,long itemID) {
+                    String score = "Here is my score at Guess My Place : "+liste.getSelectedItem().toString().split(" ")[0];
+                    Intent share = new Intent(Intent.ACTION_SEND);
+                    share.setType("text/plain");
+                    share.putExtra(Intent.EXTRA_TEXT, score);
+
+                    startActivity(Intent.createChooser(share, "Share your Score !"));
+
+                }
+            });
 
         }
         public void onClick(View v){
