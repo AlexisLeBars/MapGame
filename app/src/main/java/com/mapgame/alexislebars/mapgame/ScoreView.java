@@ -50,6 +50,7 @@ public class ScoreView extends ListActivity {
         db.open();
         super.onResume();
     }
+
     @Override
     protected void onPause(){
         db.close();
