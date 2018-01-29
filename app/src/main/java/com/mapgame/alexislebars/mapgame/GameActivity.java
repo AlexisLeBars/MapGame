@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+import android.content.Context;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -36,12 +37,13 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.io.FileOutputStream;
 
 public class GameActivity extends AppCompatActivity implements OnMapReadyCallback, OnStreetViewPanoramaReadyCallback {
 
     private GoogleMap mMap;
     private StreetViewPanorama streetView = null;
-    private DBSpot biblio = new DBSpot();
+    private DBSpot biblio;
     private LatLng posToFind;
     private Integer level = 0;
     private Double score = 0.0;
@@ -49,13 +51,16 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     private int tour = 4;
     private boolean mapR = false,streetR=false;
     private LatLng lastMarker;
+    private boolean savedState = false;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        biblio = new DBSpot();
         if(savedInstanceState != null){
             restoreState(savedInstanceState);
+            savedState = true;
         }
         Intent i = getIntent();
         level = i.getIntExtra("level",1);
@@ -109,10 +114,17 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void setNextPos(){
 
         if( tour > 0){
-            posToFind = biblio.getNewSpot(level);
+            if(savedState){
+                savedState = false;
+                posToFind = biblio.getCurPos();
+                Log.d("pos","streetview pos restored "+posToFind.latitude+ " / "+ posToFind.longitude);
+            }
+            else {
+                posToFind = biblio.getNewSpot(level);
+            }
             if(streetView != null){
                 streetView.setPosition(posToFind);
-                Log.d("pos","streeview pos change "+posToFind.latitude+ " / "+ posToFind.longitude);
+                Log.d("pos","streetview pos change "+posToFind.latitude+ " / "+ posToFind.longitude);
             }
 
             Log.d("pos",posToFind.latitude+ " / "+ posToFind.longitude);
@@ -159,11 +171,14 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                     }
                     if(addrToFind != null && addrToFind.get(0).getCountryName().equals(addrUser.get(0).getCountryName())){
                         dist = 1;
+                        message = "Good Country ! + 1";
                     }
+                    message = "Bad Country ...";
                 }
                 else{
                     //for other GameMode
                     dist = SphericalUtil.computeDistanceBetween(point,posToFind)/1000;
+                    message = ""+Math.round(dist)+ " Km away from the answer";
                 }
                     score += dist;
                 //add marker at the user point
@@ -177,12 +192,12 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 Polyline pl = addLineBetween(point,posToFind);
                 //send message to the user about the distance miss
-                Toast.makeText(getApplicationContext(),""+Math.round(dist)+ " away from the answer",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
                 //clear the map after 7 sec
                 //while this time we have to unzoom and zoom on the right place
 
                 mMap.getUiSettings().setAllGesturesEnabled(false);
-
+                biblio.curIdxs.add(biblio.cur);
                 moveCamera(mMap);
 
 
@@ -247,6 +262,8 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putIntegerArrayList("index",biblio.curIdxs);
+        outState.putInt("curIdx", biblio.cur);
+        Log.d("idx","cont "+biblio.curIdxs.toString());
         if(lastMarker != null) {
             outState.putBoolean("lastM",true);
             outState.putDouble("lat", lastMarker.latitude);
@@ -259,11 +276,12 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public void restoreState(Bundle state){
         if(state != null){
-            ArrayList<Integer> idxs = state.getIntegerArrayList("index");
-            biblio.setViewedSpots(idxs);
+            biblio.curIdxs = state.getIntegerArrayList("index");
+            biblio.setViewedSpots();
             if(state.getBoolean("lastM")) {
                 lastMarker = new LatLng(state.getDouble("lat"), state.getDouble("lon"));
             }
+            biblio.cur = state.getInt("curIdx");
         }
     }
 }

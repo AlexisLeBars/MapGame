@@ -8,8 +8,6 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.Collections;
-import java.util.ArrayList;
 import java.lang.Integer;
 
 /**
@@ -18,6 +16,7 @@ import java.lang.Integer;
 
 public class DBSpot {
     public DBSpot(){
+        db = new ArrayList<>();
         this.db.add(new Spot(new LatLng(48.53839 , 2.347287),1,false));//Paris
         this.db.add(new Spot(new LatLng(51.500835, -0.126125),1,false));//Londre
         this.db.add(new Spot(new LatLng(-22.9522546,-43.2104932),1,false));//Rio Jesus
@@ -29,10 +28,12 @@ public class DBSpot {
         this.db.add(new Spot(new LatLng(38.6922679,-9.2157719),1,false));//portugal
         this.db.add(new Spot(new LatLng(55.5869039,-3.0191189),3,false));// Coin paumé (royaume uni)
         curIdxs = new ArrayList(db.size());
+        cur = -1;
     }
 
-    public ArrayList<Spot> db = new ArrayList<>();
+    public ArrayList<Spot> db;
     public ArrayList<Integer> curIdxs;
+    public int cur;
 
     private class Spot{
         public LatLng ll;
@@ -46,17 +47,23 @@ public class DBSpot {
         }
     }
 
+    public LatLng getCurPos(){
+        return db.get(cur).ll;
+    }
+
     public LatLng getNewSpot(int level){
         int nb = getNbRowAvilableForLevel(level);
 
         if(nb == 0 ){
+            Log.d("Lieu","0 available");
             return null;
         }
         int r = (new Random()).nextInt(nb+1);
         for(Spot s : db){
             if(r == 0 && (s.i == level && !s.b )){
                 s.b = true;
-                curIdxs.add(db.indexOf(s));
+                Log.d("Lieu","vu "+db.indexOf(s));
+                cur = db.indexOf(s);
                 return s.ll;
             }else{
                 if( s.i == level && !s.b ){
@@ -64,13 +71,14 @@ public class DBSpot {
                 }
             }
         }
+        Log.d("Lieu","ret null");
         return null;
     }
-    public void setViewedSpots(ArrayList<Integer> idxs){
+    public void setViewedSpots(){
         for(Spot s : db){
-            if(idxs.contains(db.indexOf(s)) && s.b == false){
+            if(curIdxs.contains(db.indexOf(s)) && s.b == false){
                 s.b = true;
-                Log.d("Lieu","vu "+db.indexOf(s));
+                Log.d("Lieu r","vu "+db.indexOf(s));
             }
         }
     }
@@ -87,5 +95,7 @@ public class DBSpot {
         for( Spot s: db){
             s.b = false;
         }
+        cur = -1;
+        curIdxs.clear();
     }
 }
