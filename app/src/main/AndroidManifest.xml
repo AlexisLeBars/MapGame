@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:label="@string/title_activity_game">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,13 +23,13 @@
         <activity
             android:name=".GameActivity"
             android:label="@string/title_activity_game"
-            android:theme="@style/AppTheme.NoActionBar" />
+             />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyD9J0XSKrlSSyr3zYWf7JzKHHYr385L674" />
 
-        <activity android:name=".ScoreView" />
+        <activity android:name=".ScoreActivity" />
     </application>
 
 </manifest>

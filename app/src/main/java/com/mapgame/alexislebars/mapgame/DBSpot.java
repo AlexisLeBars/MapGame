@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.lang.Integer;
 
-
+//Classe décrivant les lieux à rechercher selon leur difficulté
 public class DBSpot {
     public DBSpot(){
         db = new ArrayList<>();
@@ -72,6 +72,7 @@ public class DBSpot {
     public ArrayList<Integer> curIdxs;
     public int cur;
 
+    //Classe décrivant un lieu selon ses coordonnées, sa difficulté et s'il a déjà été vu
     private class Spot{
         public LatLng ll;
         public Integer i;
@@ -83,11 +84,12 @@ public class DBSpot {
             this.b = b;
         }
     }
-
+    //renvoie les coordonnées du lieu à chercher courant
     public LatLng getCurPos(){
         return db.get(cur).ll;
     }
 
+    //renvoie les coordonnées d'un nouveau lieu à chercher
     public LatLng getNewSpot(int level){
         int nb = getNbRowAvailableForLevel(level);
 
@@ -111,6 +113,7 @@ public class DBSpot {
         Log.d("Lieu","ret null");
         return null;
     }
+    //restaure les lieux déjà vus
     public void setViewedSpots(){
         for(Spot s : db){
             if(curIdxs.contains(db.indexOf(s)) && !s.b){
@@ -119,6 +122,7 @@ public class DBSpot {
             }
         }
     }
+    //renvoie le nombre de lieux encore disponible pour une difficulté
     private int getNbRowAvailableForLevel(int level){
         int ret = 0;
         for(Spot s : db){
@@ -128,6 +132,7 @@ public class DBSpot {
         }
         return ret;
     }
+    //remise à zéro des lieux vus et courant
     public void reset(){
         for( Spot s: db){
             s.b = false;

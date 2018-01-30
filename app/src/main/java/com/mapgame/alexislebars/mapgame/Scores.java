@@ -1,5 +1,6 @@
 package com.mapgame.alexislebars.mapgame;
 
+//Représentation objet d'un score
 public class Scores {
     private long id;
     private String level;

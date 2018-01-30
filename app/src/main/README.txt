@@ -25,9 +25,9 @@ Auteurs : Alexis Le Bars, Aurélien Lamoureux
 Contenu de l'application :
 
 L'application compte 3 Activitiés principales :
-- MainActivity, gérant la page d'acceuil et permettant la sélection du mode et de la difficulté de jeu
+- MainActivity, gérant la page d'accueil et permettant la sélection du mode et de la difficulté de jeu
 - GameActivity, gérant l'affichage et le déroulement du jeu
-- ScoreView, gérant l'affichage du tableau des scores avec l'aide de ScoresAdapter s'occupant de remplir les données du tableau
+- ScoreActivity, gérant l'affichage du tableau des scores avec l'aide de ScoresAdapter s'occupant de remplir les données du tableau
 
 Elle compte aussi 3 Classes qui s'occupent de la base de données contenant les informations concernant les scores :
 - DataBaseHelper, contenant les informations structurelles de la base qui a une table et 5 colonnes (id, level, score, date, mode)
@@ -39,7 +39,7 @@ Elle dispose enfin d'une dernière Classe, DBSpot, contenant les informations su
 
 Description de l'application :
 
-L'utilisateur démarre sur la page d'acceuil et est invité à sélectionner le mode et la difficulté du jeu.
+L'utilisateur démarre sur la page d'accueil et est invité à sélectionner le mode et la difficulté du jeu.
 Les différents mode de jeu sont définis ainsi :
 - Normal, jeu classique où l'on doit essayer d'obtenir un score minimal en se situant le plus proche possible du lieux recherché sur la streetView.
   Le score est le cumul de toute les différences de distance
@@ -52,7 +52,7 @@ Et la difficulté :
 - Medium, tout est autorisé et les lieux assez difficilement reconnaissables
 - Hard, les déplacements sur la streetView sont désactivés mais pas ceux de la caméra, les noms de rue cachés et les lieux assez difficilement reconnaissables
 
-Le jeu se lance et l'utilisateur peut donc marquer un lieu proche de celui recherché et ainsi de suite jusqu'a à la fin de la partie où le score est calculé et mis en base.
+Le jeu se lance si la connection à internet est disponible sinon on retourne à l'accueil. L'utilisateur peut donc marquer un lieu proche de celui recherché et ainsi de suite jusqu'a à la fin de la partie où le score est calculé et mis en base.
 Le joueur est ensuite redirigé vers le tableau des scores dont il peut trier les informations en cliquant sur les entêtes.
 Enfin l'utilisateur peut partager un score en cliquant sur la ligne correspondante du tableau.
 

@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         buttonS.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                Intent intent = new Intent(MainActivity.this, ScoreView.class);
+                Intent intent = new Intent(MainActivity.this, ScoreActivity.class);
                 startActivity(intent);
             }
 

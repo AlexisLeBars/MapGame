@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
-public class ScoreView extends ListActivity {
+public class ScoreActivity extends ListActivity {
         private ScoreDataSource db;
         private String order;
         private ArrayAdapter<Scores> adapter;

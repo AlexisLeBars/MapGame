@@ -5,11 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-
 import java.util.ArrayList;
 import java.util.List;
 
-
+//Gère la base de données des scores (1 table, 5 colonnes: id,score,level,date,mode)
 public class ScoreDataSource {
     private SQLiteDatabase database;
     private DataBaseHelper dbHelper;
@@ -52,7 +51,7 @@ public class ScoreDataSource {
         database.delete(DataBaseHelper.TABLE_scores, DataBaseHelper.COLUMN_id
                 + " = " + id, null);
     }
-
+    //Récupere la liste des scores ordonnable par colonne
     public List<Scores> getAllScore(String order) {
         List <Scores> s = new ArrayList<>();
         String sort = " DESC";
@@ -63,7 +62,6 @@ public class ScoreDataSource {
         if(order.equals("score")){
             cursor = database.query(DataBaseHelper.TABLE_scores,
                     allColumns, null, null, null, null, "cast("+order+" as unsigned)"+sort+","+DataBaseHelper.COLUMN_mode+" DESC");
-
         }
         else
             cursor = database.query(DataBaseHelper.TABLE_scores,
@@ -75,11 +73,10 @@ public class ScoreDataSource {
             s.add(cur_s);
             cursor.moveToNext();
         }
-        // assurez-vous de la fermeture du curseur
         cursor.close();
         return s;
     }
-
+    //Conversion objet d'un score en base
     private Scores cursorToScore(Cursor cursor) {
         Scores score = new Scores();
         score.setId(cursor.getLong(0));

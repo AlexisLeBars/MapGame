@@ -105,7 +105,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
             mMap.moveCamera(CameraUpdateFactory.newLatLng(pos));
         }
     }
-
+    //Déclenche la fin du jeu et mets le score en base
     public void endGame(){
         Log.d("pos","fin de la partie:"+score);
 
@@ -134,7 +134,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .setMessage("Your Score : "+Math.round(score))
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(GameActivity.this, ScoreView.class);
+                        Intent intent = new Intent(GameActivity.this, ScoreActivity.class);
                         startActivity(intent);
                         finish();
                     }
@@ -143,7 +143,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .setIcon(android.R.drawable.ic_dialog_info)
                 .show();
     }
-
+    //Charge un nouveau lieux à chercher
     public void setNextPos(){
         nbClick = 0;
         connectivityCheck();
@@ -155,6 +155,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
             else {
                 posToFind = biblio.getNewSpot(level);
+                tour--;
             }
             if(streetView != null){
                 streetView.setPosition(posToFind);
@@ -164,7 +165,8 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
             endGame();
         }
 
-        tour--;
+        setTitle("Location "+(4-tour)+"/4");
+
     }
 
     @Override
@@ -202,7 +204,6 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                     String message;
                     lastMarker = new LatLng(point.latitude, point.longitude);
                     if (mode.equals("Country")) {
-                        //if GameMode is Pays
                         gcd = new Geocoder(getApplicationContext(), Locale.getDefault());
                         List<Address> addrToFind = null;
                         List<Address> addrUser = null;
@@ -218,12 +219,11 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                         } else
                             message = "Bad Country ...";
                     } else {
-                        //for other GameMode
                         dist = SphericalUtil.computeDistanceBetween(point, posToFind) / 1000;
                         message = "" + Math.round(dist) + " Km away from the answer";
                     }
                     score += dist;
-                    //add marker at the user point
+                    //Ajout des marqueurs recherché et testé
                     mMap.addMarker(new MarkerOptions()
                             .position(point)
                             .icon(BitmapDescriptorFactory
@@ -240,15 +240,10 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                     );
 
                     addLineBetween(point, posToFind);
-                    //send message to the user about the distance miss
                     Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-                    //clear the map after 7 sec
-                    //while this time we have to unzoom and zoom on the right place
-
 
                     biblio.curIdxs.add(biblio.cur);
                     moveCamera();
-
 
                     (new Handler()).postDelayed(new Runnable() {
                         @Override
@@ -264,7 +259,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
     }
-
+    //Ajoute une ligne entre les marqueurs recherché et testé
     private void addLineBetween(LatLng a, LatLng b){
         PolylineOptions l = (new PolylineOptions())
                 .add(a)
@@ -273,6 +268,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                 ;
         mMap.addPolyline(l);
     }
+    //Effectue le déplacement de la caméra vers le point recherché avec un zoom-dézoom
     private void moveCamera(){
 
         final GoogleMap.CancelableCallback b = new GoogleMap.CancelableCallback(){
@@ -301,6 +297,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.animateCamera(CameraUpdateFactory.zoomTo(1), 800,a);
     }
 
+    //Sauvegarde l'état du tour du jeu, l'index, le marqueur du lieu courant et l'index des lieux visités
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -317,7 +314,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
             outState.putBoolean("lastM",false);
         }
     }
-
+    //Restaure l'état du jeu
     public void restoreState(Bundle state){
         if(state != null){
             biblio.curIdxs = state.getIntegerArrayList("index");
@@ -329,7 +326,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
             tour = state.getInt("tour");
         }
     }
-
+    //Teste l'état de la connection internet
     public void connectivityCheck(){
         boolean connected = false;
         ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);

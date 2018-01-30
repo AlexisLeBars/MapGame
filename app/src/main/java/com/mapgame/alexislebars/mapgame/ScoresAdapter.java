@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import java.util.List;
 
+//Assure l'affichage des données des scores dans la ScoreActivity
 public class ScoresAdapter extends ArrayAdapter<Scores> {
     Scores score;
     public ScoresAdapter(Context context, List<Scores> scores) {

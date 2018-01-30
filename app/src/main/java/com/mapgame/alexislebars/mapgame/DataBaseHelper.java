@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+//Données structurelles de la base
 public class DataBaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_scores = "scores";
     public static final String COLUMN_id = "id";
