@@ -247,7 +247,8 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                         public void run() {
                             mMap.clear();
                             setNextPos();
-                            mMap.getUiSettings().setAllGesturesEnabled(true);
+                            if(tour > 0)
+                                mMap.getUiSettings().setAllGesturesEnabled(true);
 
                         }
                     }, 5500);
@@ -269,7 +270,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         final GoogleMap.CancelableCallback b = new GoogleMap.CancelableCallback(){
             @Override
             public void onFinish() {
-                mMap.animateCamera(CameraUpdateFactory.zoomTo(6),1000,null);
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(6),800,null);
             }
 
             @Override
@@ -281,7 +282,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onFinish() {
                 CameraPosition.Builder cp = new CameraPosition.Builder().target(posToFind);
-                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cp.build()),2000,b);
+                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cp.build()),1200,b);
             }
 
             @Override
@@ -289,7 +290,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             }
         };
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(1), 1000,a);
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(1), 800,a);
     }
 
     @Override
