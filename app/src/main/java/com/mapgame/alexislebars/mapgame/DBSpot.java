@@ -45,6 +45,7 @@ public class DBSpot {
         this.db.add(new Spot(new LatLng(35.3656282,138.7324052),3,false));
         this.db.add(new Spot(new LatLng(51.1786423,-1.8262766),1,false));
 
+
         this.db.add(new Spot(new LatLng(-17.9247153,25.8514839),2,false));
         this.db.add(new Spot(new LatLng(71.1709152,25.7834537),1,false));
         this.db.add(new Spot(new LatLng(-25.695376,-54.4379301),3,false));
