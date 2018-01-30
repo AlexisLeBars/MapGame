@@ -1,10 +1,13 @@
 package com.mapgame.alexislebars.mapgame;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -52,6 +55,9 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
             restoreState(savedInstanceState);
             savedState = true;
         }
+
+        connectivityCheck();
+
         Intent i = getIntent();
         level = i.getIntExtra("level",1);
         mode = i.getStringExtra("mode");
@@ -140,6 +146,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public void setNextPos(){
         nbClick = 0;
+        connectivityCheck();
         if( tour > 0){
             if(savedState){
                 savedState = false;
@@ -184,6 +191,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             @Override
             public void onMapClick(LatLng point){
+                connectivityCheck();
                 mMap.getUiSettings().setAllGesturesEnabled(false);
                 nbClick++;
                 if(nbClick == 1) {
@@ -298,6 +306,7 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onSaveInstanceState(outState);
         outState.putIntegerArrayList("index",biblio.curIdxs);
         outState.putInt("curIdx", biblio.cur);
+        outState.putInt("tour",tour);
         Log.d("idx","cont "+biblio.curIdxs.toString());
         if(lastMarker != null) {
             outState.putBoolean("lastM",true);
@@ -317,6 +326,33 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
                 lastMarker = new LatLng(state.getDouble("lat"), state.getDouble("lon"));
             }
             biblio.cur = state.getInt("curIdx");
+            tour = state.getInt("tour");
+        }
+    }
+
+    public void connectivityCheck(){
+        boolean connected = false;
+        ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        connected = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED;
+
+        if(!connected){
+            AlertDialog.Builder builder;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+            } else {
+                builder = new AlertDialog.Builder(this);
+            }
+            builder.setTitle("Internet Access")
+                    .setMessage("Connectivity Issue !")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    })
+                    .setCancelable(false)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
         }
     }
 }

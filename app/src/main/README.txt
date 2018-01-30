@@ -59,6 +59,6 @@ Enfin l'utilisateur peut partager un score en cliquant sur la ligne correspondan
 
 Difficultés rencontrées :
 - Nous avons tout d'abord tenté de calculer nous même les distances à l'aide de la formule des distances orthodromiques mais les résultats n'étant pas convainquant nous avons utilisé les fonctions de google Maps
-- N'autoriser qu'un seul click sur la carte entre chaque recherche
+- Veiller à n'autoriser qu'un seul click sur la carte entre chaque recherche
 
 
