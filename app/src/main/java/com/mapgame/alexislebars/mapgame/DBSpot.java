@@ -44,6 +44,25 @@ public class DBSpot {
         this.db.add(new Spot(new LatLng(-25.3423968,131.0089774),1,false));
         this.db.add(new Spot(new LatLng(35.3656282,138.7324052),3,false));
         this.db.add(new Spot(new LatLng(51.1786423,-1.8262766),1,false));
+
+        this.db.add(new Spot(new LatLng(-17.9247153,25.8514839),2,false));
+        this.db.add(new Spot(new LatLng(71.1709152,25.7834537),1,false));
+        this.db.add(new Spot(new LatLng(-25.695376,-54.4379301),3,false));
+        this.db.add(new Spot(new LatLng(44.0915517,3.0218092),2,false));
+        this.db.add(new Spot(new LatLng(52.5185078,13.399629),2,false));
+        this.db.add(new Spot(new LatLng(50.6789177,4.4053262),2,false));
+        this.db.add(new Spot(new LatLng(28.683333,83.856667),3,false));
+        this.db.add(new Spot(new LatLng(-8.3749036,115.451302),2,false));
+        this.db.add(new Spot(new LatLng(40.747067,14.5013783),3,false));
+        this.db.add(new Spot(new LatLng(-0.0021378,-78.4554744),1,false));
+        this.db.add(new Spot(new LatLng(48.885961,2.3432133),1,false));
+        this.db.add(new Spot(new LatLng(49.3604639,-0.8555708),2,false));
+        this.db.add(new Spot(new LatLng(29.6554942,91.1185792),2,false));
+        this.db.add(new Spot(new LatLng(5.9701254,-62.5362199),1,false));
+        this.db.add(new Spot(new LatLng(36.1484641,-5.3396137),3,false));
+        this.db.add(new Spot(new LatLng(-79.75,-82.5),3,false));
+
+
         curIdxs = new ArrayList<>(db.size());
         cur = -1;
     }
