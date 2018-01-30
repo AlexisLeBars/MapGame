@@ -163,6 +163,12 @@ public class GameActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onStreetViewPanoramaReady(StreetViewPanorama streetViewPanorama) {
         streetR = true;
+
+        if(level == 3 || mode.equals("Country")){
+            streetViewPanorama.setStreetNamesEnabled(false);
+            streetViewPanorama.setUserNavigationEnabled(false);
+        }
+
         if(mapR){
 
             setNextPos();

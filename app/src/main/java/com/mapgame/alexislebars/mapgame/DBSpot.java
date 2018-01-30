@@ -20,6 +20,30 @@ public class DBSpot {
         this.db.add(new Spot(new LatLng(40.420025,-3.6881135),1,false));//espagne
         this.db.add(new Spot(new LatLng(38.6922679,-9.2157719),1,false));//portugal
         this.db.add(new Spot(new LatLng(55.5869039,-3.0191189),3,false));// Coin paumé (royaume uni)
+        this.db.add(new Spot(new LatLng(28.683333,83.856667),1,false));// himalaya
+        this.db.add(new Spot(new LatLng(43.0782094,-79.074204),2,false));// niagara
+        this.db.add(new Spot(new LatLng(43.0828164,-79.0741631),2,false));// niagara2
+        this.db.add(new Spot(new LatLng(36.122505,-112.12134),1,false));//grand canyon 1
+        this.db.add(new Spot(new LatLng(42.6959086,23.331986),3,false));// hagia sophia
+        this.db.add(new Spot(new LatLng(30.3284544,35.4443622),2,false));// pétra jordani
+        this.db.add(new Spot(new LatLng(30.33054,35.4423383),3,false));// pétra 2
+        this.db.add(new Spot(new LatLng(20.6842848,-88.5677826),3,false));// chichen itza
+        this.db.add(new Spot(new LatLng(41.8912216,12.4916112),3,false));
+        this.db.add(new Spot(new LatLng(14.3558196,100.5590247),3,false));
+        this.db.add(new Spot(new LatLng(-27.122067,-109.2890096),3,false));
+        this.db.add(new Spot(new LatLng(-27.1151265,-109.3954123),2,false));
+        this.db.add(new Spot(new LatLng(13.4125244,103.8651291),3,false));
+        this.db.add(new Spot(new LatLng(48.8055984,2.1174569),3,false));
+        this.db.add(new Spot(new LatLng(55.6928117,12.599225),2,false));
+        this.db.add(new Spot(new LatLng(51.8851585,4.6399012),2,false));
+        this.db.add(new Spot(new LatLng(57.3228575,-4.4243817),3,false));
+        this.db.add(new Spot(new LatLng(48.6318479,-1.5091184),3,false));
+        this.db.add(new Spot(new LatLng(52.516245,13.3769667),1,false));
+        this.db.add(new Spot(new LatLng(41.4030319,2.1735623),3,false));
+        this.db.add(new Spot(new LatLng(-25.3448384,131.032539),2,false));
+        this.db.add(new Spot(new LatLng(-25.3423968,131.0089774),1,false));
+        this.db.add(new Spot(new LatLng(35.3656282,138.7324052),3,false));
+        this.db.add(new Spot(new LatLng(51.1786423,-1.8262766),1,false));
         curIdxs = new ArrayList<>(db.size());
         cur = -1;
     }
